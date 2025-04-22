@@ -20,7 +20,7 @@ internal class RetryHttpMessageHandler : DelegatingHandler
             try
             {
                 var response = await base.SendAsync(request, cancellationToken);
-                if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
+                if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode) && requestCount < MaxRetries)
                 {
                     continue;
                 }
