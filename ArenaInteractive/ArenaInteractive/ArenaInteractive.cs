@@ -52,7 +52,7 @@ public static class SmartDialog
             options.AllowedSendTimeStart,
             options.AllowedSendTimeEnd,
             options.AllowedSendDays,
-            options.RequestId,
+            options.RequestId ?? Guid.NewGuid().ToString(),
             options.UnicodeCharacterHandlingPolicy);
 
         var response = await SmartDialogHttpClient.PutAsJsonAsync($"messages?personalAccessToken={options.PersonalAccessToken}&customerId={input.CustomerId}", smartSendMessage, SmartDialogSourceGenerationContext.Default.SmartSendMessage, cancellationToken);

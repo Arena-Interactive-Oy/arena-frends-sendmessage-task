@@ -53,7 +53,7 @@ public class Input
 /// <summary>
 /// Recipient
 /// </summary>
-public record Recipient
+public class Recipient
 {
     /// <summary>
     /// Recipient address (phone number), preferably in E.164 format
