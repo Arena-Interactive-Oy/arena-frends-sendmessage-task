@@ -34,25 +34,25 @@ public class Options
     /// <summary>
     /// Optional, for scheduled messages
     /// </summary>
-    [DisplayFormat(DataFormatString = "Datetime")]
+    /// <example>2025-04-22T10:45:23Z</example>
     public DateTime? SendDateTime { get; set; }
 
     /// <summary>
     /// Optional, for limiting time of day (UTC) when messages are allowed to be sent (start of range)
     /// </summary>
-    [DisplayFormat(DataFormatString = "Time")]
+    /// <example>08:00:00</example>
     public TimeOnly? AllowedSendTimeStart { get; set; }
 
     /// <summary>
     /// Optional, for limiting time of day (UTC) when messages are allowed to be sent (end of range)
     /// </summary>
-    [DisplayFormat(DataFormatString = "Time")]
+    /// <example>16:00:00</example>
+    [DisplayFormat(DataFormatString = "Text")]
     public TimeOnly? AllowedSendTimeEnd { get; set; }
 
     /// <summary>
     /// Optional, for limiting day(s) of week when messages are allowed to be sent
     /// </summary>
-    [DisplayFormat(DataFormatString = "Text")]
     public DayOfWeek[] AllowedSendDays { get; set; }
 
     /// <summary>
