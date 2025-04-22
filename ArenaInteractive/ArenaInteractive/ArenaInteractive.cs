@@ -55,7 +55,7 @@ public static class SmartDialog
             options.RequestId,
             options.UnicodeCharacterHandlingPolicy);
 
-        var response = await SmartDialogHttpClient.PutAsJsonAsync("messages", smartSendMessage, SmartDialogSourceGenerationContext.Default.SmartSendMessage, cancellationToken);
+        var response = await SmartDialogHttpClient.PutAsJsonAsync($"messages?personalAccessToken={options.PersonalAccessToken}&customerId={input.CustomerId}", smartSendMessage, SmartDialogSourceGenerationContext.Default.SmartSendMessage, cancellationToken);
         if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
         {
             var responseBodyAsString = await response.Content.ReadAsStringAsync(cancellationToken);
