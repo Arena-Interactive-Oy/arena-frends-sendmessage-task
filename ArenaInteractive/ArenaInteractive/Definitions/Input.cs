@@ -64,5 +64,21 @@ public class Recipient
     /// <summary>
     /// Optional, recipient-specific personalization
     /// </summary>
-    public Dictionary<string, string> Personalization { get; set; }
+    public Personalization[] Personalization { get; set; }
+}
+
+/// <summary>
+/// Recipient-specific personalization
+/// </summary>
+public class Personalization
+{
+    /// <summary>
+    /// Personalization variable name
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Personalization variable value
+    /// </summary>
+    public string Value { get; set; }
 }

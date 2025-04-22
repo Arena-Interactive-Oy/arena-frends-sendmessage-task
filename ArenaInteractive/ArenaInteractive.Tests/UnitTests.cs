@@ -32,7 +32,7 @@ internal class UnitTests
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = new Dictionary<string, string>(),
+                    Personalization = [],
                 },
             ],
             Sender = "Tester",
@@ -62,7 +62,7 @@ internal class UnitTests
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = new Dictionary<string, string>(),
+                    Personalization = [],
                 },
             ],
             Sender = "Tester",
@@ -90,7 +90,7 @@ internal class UnitTests
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = new Dictionary<string, string>(),
+                    Personalization = [],
                 },
             ],
             Sender = "Tester",

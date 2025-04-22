@@ -1,7 +1,6 @@
 ﻿namespace ArenaInteractive;
 
 using System.Linq;
-using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DTOs;
@@ -45,7 +44,7 @@ public static class SmartDialog
         var smartSendMessage = new SmartSendMessage(
             input.Sender,
             input.Content,
-            input.Recipients.Select(r => new SmartSendMessageRecipient(r.Address, r.Personalization)).ToArray(),
+            input.Recipients.Select(r => new SmartSendMessageRecipient(r.Address, r.Personalization.ToDictionary(p => p.Name, p => p.Value))).ToArray(),
             options.DlrUrl,
             options.CustomerData,
             options.SendDateTime,
