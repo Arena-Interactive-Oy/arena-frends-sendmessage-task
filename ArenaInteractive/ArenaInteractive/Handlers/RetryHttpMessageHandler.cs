@@ -1,5 +1,6 @@
 ﻿namespace ArenaInteractive.Handlers;
 
+using System.Linq;
 using System.Net;
 using System;
 using System.Net.Http;
@@ -19,7 +20,7 @@ internal class RetryHttpMessageHandler : DelegatingHandler
             try
             {
                 var response = await base.SendAsync(request, cancellationToken);
-                if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
                 {
                     continue;
                 }

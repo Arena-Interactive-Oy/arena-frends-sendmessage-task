@@ -18,7 +18,6 @@ using Definitions;
 /// </summary>
 public static class SmartDialog
 {
-    private static readonly HttpStatusCode[] HandledStatusCodes = [HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.TooManyRequests];
     internal static HttpClient SmartDialogHttpClient = CreateSmartDialogHttpClient();
 
     /// <summary>
@@ -57,7 +56,7 @@ public static class SmartDialog
             options.UnicodeCharacterHandlingPolicy);
 
         var response = await SmartDialogHttpClient.PutAsJsonAsync("messages", smartSendMessage, SmartDialogSourceGenerationContext.Default.SmartSendMessage, cancellationToken);
-        if (!HandledStatusCodes.Contains(response.StatusCode))
+        if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
         {
             var responseBodyAsString = await response.Content.ReadAsStringAsync(cancellationToken);
             return new Result($"Sending failed, unknown statusCode: {(int)response.StatusCode}, response body: {responseBodyAsString}");
