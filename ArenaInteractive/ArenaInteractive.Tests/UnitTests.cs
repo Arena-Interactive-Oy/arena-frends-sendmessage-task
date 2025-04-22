@@ -1,7 +1,6 @@
 namespace ArenaInteractive.Tests;
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +36,7 @@ internal class UnitTests
             ],
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
+            CustomerId = Guid.NewGuid(),
         };
 
         var options = new Options { PersonalAccessToken = "test1234" };
@@ -67,6 +67,7 @@ internal class UnitTests
             ],
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
+            CustomerId = Guid.NewGuid(),
         };
 
         var options = new Options { PersonalAccessToken = "test1234" };
@@ -95,6 +96,7 @@ internal class UnitTests
             ],
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
+            CustomerId = Guid.NewGuid(),
         };
 
         var options = new Options { PersonalAccessToken = "test1234" };

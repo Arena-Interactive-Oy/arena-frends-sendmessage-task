@@ -1,5 +1,6 @@
 ﻿namespace ArenaInteractive;
 
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -48,8 +49,8 @@ public static class SmartDialog
             options.DlrUrl,
             options.CustomerData,
             options.SendDateTime,
-            options.AllowedSendTimeStart,
-            options.AllowedSendTimeEnd,
+            TimeOnly.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var start) ? start : null,
+            TimeOnly.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var end) ? end : null,
             options.AllowedSendDays,
             options.RequestId ?? Guid.NewGuid().ToString(),
             options.UnicodeCharacterHandlingPolicy);

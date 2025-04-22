@@ -1,4 +1,6 @@
-﻿namespace ArenaInteractive.Extensions;
+﻿using System.Globalization;
+
+namespace ArenaInteractive.Extensions;
 
 using System;
 using Definitions;
@@ -17,8 +19,9 @@ internal static class OptionsExtensions
             return $"{nameof(Options.AllowedSendDays)} must have at least 1 element";
         }
 
-        if (options.AllowedSendTimeStart != null && options.AllowedSendTimeEnd != null &&
-            options.AllowedSendTimeStart >= options.AllowedSendTimeEnd)
+        if (TimeOnly.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var allowedTimeStart) &&
+            TimeOnly.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var allowedTimeEnd) &&
+            allowedTimeStart > allowedTimeEnd)
         {
             return $"{nameof(Options.AllowedSendTimeStart)} must smaller than {nameof(Options.AllowedSendTimeEnd)}";
         }

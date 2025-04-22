@@ -1,11 +1,22 @@
 ﻿namespace ArenaInteractive.Extensions;
 
+using System;
 using Definitions;
 
 internal static class InputExtensions
 {
     internal static string Validate(this Input input)
     {
+        if (input.CustomerId == Guid.Empty)
+        {
+            return $"{nameof(Input.CustomerId)} must be a valid, non-empty GUID";
+        }
+
+        if (input.ServiceId == Guid.Empty)
+        {
+            return $"{nameof(Input.ServiceId)} must be a valid, non-empty GUID";
+        }
+
         if (string.IsNullOrWhiteSpace(input.Content) || input.Content.Length > 1000)
         {
             return $"{nameof(Input.Content)} is required and must be max 1000 characters";

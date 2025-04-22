@@ -41,14 +41,15 @@ public class Options
     /// Optional, for limiting time of day (UTC) when messages are allowed to be sent (start of range)
     /// </summary>
     /// <example>08:00:00</example>
-    public TimeOnly? AllowedSendTimeStart { get; set; }
+    [DisplayFormat(DataFormatString = "Text")]
+    public string AllowedSendTimeStart { get; set; }
 
     /// <summary>
     /// Optional, for limiting time of day (UTC) when messages are allowed to be sent (end of range)
     /// </summary>
     /// <example>16:00:00</example>
     [DisplayFormat(DataFormatString = "Text")]
-    public TimeOnly? AllowedSendTimeEnd { get; set; }
+    public string AllowedSendTimeEnd { get; set; }
 
     /// <summary>
     /// Optional, for limiting day(s) of week when messages are allowed to be sent
