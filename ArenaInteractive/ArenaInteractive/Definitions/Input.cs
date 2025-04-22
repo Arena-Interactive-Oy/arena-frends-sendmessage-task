@@ -10,6 +10,13 @@ using System.ComponentModel.DataAnnotations;
 public class Input
 {
     /// <summary>
+    /// Your CustomerId
+    /// </summary>
+    [DisplayFormat(DataFormatString = "Text")]
+    [Required]
+    public Guid CustomerId { get; set; }
+
+    /// <summary>
     /// ServiceId for service to use to send the message
     /// </summary>
     [DisplayFormat(DataFormatString = "Text")]
