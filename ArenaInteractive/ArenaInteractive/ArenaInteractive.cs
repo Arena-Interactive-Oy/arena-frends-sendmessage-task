@@ -84,7 +84,7 @@ public static class SmartDialog
             ? new HttpClient(primaryMessageHandler)
             : new HttpClient(new RetryHttpMessageHandler());
 
-        httpClient.BaseAddress = new Uri("https://api.arena.fi/messaging-gateway/v1", UriKind.Absolute);
+        httpClient.BaseAddress = new Uri("https://api.arena.fi/messaging-gateway/v1/", UriKind.Absolute);
 
         return httpClient;
     }
