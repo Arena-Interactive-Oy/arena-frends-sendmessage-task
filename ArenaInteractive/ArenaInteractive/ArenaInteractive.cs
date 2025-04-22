@@ -54,7 +54,7 @@ public static class SmartDialog
             TimeSpan.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture,  out var start) ? start : null,
             TimeSpan.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, out var end) ? end : null,
             options.AllowedSendDays,
-            options.RequestId ?? Guid.NewGuid().ToString(),
+            !string.IsNullOrWhiteSpace(options.RequestId) ? options.RequestId : Guid.NewGuid().ToString(),
             options.UnicodeCharacterHandlingPolicy);
 
         using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "messages");
