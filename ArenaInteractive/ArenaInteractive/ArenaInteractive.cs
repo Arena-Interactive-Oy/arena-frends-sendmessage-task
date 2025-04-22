@@ -1,5 +1,7 @@
 ﻿namespace ArenaInteractive;
 
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http.Json;
@@ -27,7 +29,7 @@ public static class SmartDialog
     /// <param name="input">Message send parameters</param>
     /// <param name="options">Optional parameters and controls</param>
     /// <param name="cancellationToken">Cancellation token given by Frends.</param>
-    /// <returns>Object { string Id, int RecipientCount, int MessagePartCount, DateTime SendDateTimeEstimate, string[] Warnings }.</returns>
+    /// <returns>Object { bool Success, string Id, int RecipientCount, int MessagePartCount, DateTime SendDateTimeEstimate, string[] Warnings }.</returns>
     public static async Task<Result> SendSmartMessage([PropertyTab] Input input, [PropertyTab] Options options, CancellationToken cancellationToken)
     {
         var inputValidationMessage = input.Validate();
@@ -55,14 +57,20 @@ public static class SmartDialog
             options.RequestId ?? Guid.NewGuid().ToString(),
             options.UnicodeCharacterHandlingPolicy);
 
-        var response = await SmartDialogHttpClient.PutAsJsonAsync($"messages?personalAccessToken={options.PersonalAccessToken}&customerId={input.CustomerId}", smartSendMessage, SmartDialogSourceGenerationContext.Default.SmartSendMessage, cancellationToken);
+        using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "messages");
+        httpRequestMessage.Content = JsonContent.Create(smartSendMessage, new MediaTypeHeaderValue(MediaTypeNames.Application.Json), SmartDialogSourceGenerationContext.Default.Options);
+        httpRequestMessage.Headers.TryAddWithoutValidation("Personal-Access-Token", options.PersonalAccessToken);
+        httpRequestMessage.Headers.TryAddWithoutValidation("Customer-Id", input.CustomerId.ToString());
+        httpRequestMessage.Headers.TryAddWithoutValidation("Service-Id", input.ServiceId.ToString());
+
+        var response = await SmartDialogHttpClient.SendAsync(httpRequestMessage, cancellationToken);
         if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
         {
             var responseBodyAsString = await response.Content.ReadAsStringAsync(cancellationToken);
             return new Result($"Sending failed, unknown statusCode: {(int)response.StatusCode}, response body: {responseBodyAsString}");
         }
 
-        var responseObject = await response.Content.ReadFromJsonAsync<SendResponse>(SmartDialogSourceGenerationContext.Default.SendResponse, cancellationToken);
+        var responseObject = await response.Content.ReadFromJsonAsync(SmartDialogSourceGenerationContext.Default.SendResponse, cancellationToken);
         if (responseObject == null)
         {
             return new Result("Sending failed, response body is empty");
