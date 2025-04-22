@@ -4,16 +4,16 @@
 	  <TargetFramework>net6.0</TargetFramework>
 	  <LangVersion>Latest</LangVersion>
 	  <Version>1.0.0</Version>
-	  <Authors>Frends</Authors>
-	  <Copyright>Frends</Copyright>
-	  <Company>Frends</Company>
+	  <Authors>Arena Interactive</Authors>
+	  <Copyright>Arena Interactive</Copyright>
+	  <Company>Arena Interactive</Company>
 	  <Product>Frends</Product>
 	  <PackageTags>Frends</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <Description>Description of the Task</Description>
+	  <Description>Send an SMS message to one or many recipients using a sender name or number, with optional smart parameters</Description>
 	  <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/FrendsPlatform/Frends.SmartDialog/tree/main/ArenaInteractive</RepositoryUrl>
+	  <RepositoryUrl>https://github.com/Arena-Interactive-Oy/arena-frends-sendmessage-task</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
