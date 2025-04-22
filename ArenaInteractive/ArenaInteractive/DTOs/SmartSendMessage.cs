@@ -2,8 +2,6 @@
 
 using Definitions;
 using System;
-using System.ComponentModel;
-using System.Linq;
 
 /// <summary>
 /// Request object type for Smart Send Messages API
@@ -24,7 +22,7 @@ public class SmartSendMessage
     /// <param name="allowedSendDays">Allowed send days, if restricted</param>
     /// <param name="requestId">Unique request id</param>
     /// <param name="unicodeCharacterHandlingPolicy">Unicode handling policy</param>
-    public SmartSendMessage(string sender, string content, SmartSendMessageRecipient[] recipients, string dlrUrl, string customerData, DateTime? sendDateTime, TimeOnly? allowedSendTimeStart, TimeOnly? allowedSendTimeEnd, DayOfWeek[] allowedSendDays, string requestId, UnicodeCharacterHandlingPolicy unicodeCharacterHandlingPolicy)
+    public SmartSendMessage(string sender, string content, SmartSendMessageRecipient[] recipients, string dlrUrl, string customerData, DateTime? sendDateTime, TimeSpan? allowedSendTimeStart, TimeSpan? allowedSendTimeEnd, DayOfWeek[] allowedSendDays, string requestId, UnicodeCharacterHandlingPolicy unicodeCharacterHandlingPolicy)
     {
         Sender = sender;
         Content = content;
@@ -72,12 +70,12 @@ public class SmartSendMessage
     /// <summary>
     /// Gets or sets AllowedSendTimeStart
     /// </summary>
-    public TimeOnly? AllowedSendTimeStart { get; set; }
+    public TimeSpan? AllowedSendTimeStart { get; set; }
 
     /// <summary>
     /// Gets or sets AllowedSendTimeEnd
     /// </summary>
-    public TimeOnly? AllowedSendTimeEnd { get; set; }
+    public TimeSpan? AllowedSendTimeEnd { get; set; }
 
     /// <summary>
     /// Gets or sets AllowedSendDays array

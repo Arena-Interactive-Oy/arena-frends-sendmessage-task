@@ -19,8 +19,8 @@ internal static class OptionsExtensions
             return $"{nameof(Options.AllowedSendDays)} must have at least 1 element";
         }
 
-        if (TimeOnly.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var allowedTimeStart) &&
-            TimeOnly.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var allowedTimeEnd) &&
+        if (TimeSpan.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, out var allowedTimeStart) &&
+            TimeSpan.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, out var allowedTimeEnd) &&
             allowedTimeStart > allowedTimeEnd)
         {
             return $"{nameof(Options.AllowedSendTimeStart)} must smaller than {nameof(Options.AllowedSendTimeEnd)}";
