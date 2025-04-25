@@ -7,5 +7,5 @@ using System.Net;
 /// </summary>
 public static class Constants
 {
-    public static readonly HttpStatusCode[] HandledStatusCodes = [HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.TooManyRequests];
+    public static readonly HttpStatusCode[] HandledStatusCodes = new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.TooManyRequests };
 }
