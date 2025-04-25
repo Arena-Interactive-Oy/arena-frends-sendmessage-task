@@ -51,7 +51,7 @@ public static class SmartDialog
             options.DlrUrl,
             options.CustomerData,
             options.SendDateTime,
-            TimeSpan.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture,  out var start) ? start : null,
+            TimeSpan.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, out var start) ? start : null,
             TimeSpan.TryParse(options.AllowedSendTimeEnd, CultureInfo.InvariantCulture, out var end) ? end : null,
             options.AllowedSendDays,
             !string.IsNullOrWhiteSpace(options.RequestId) ? options.RequestId : Guid.NewGuid().ToString(),

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ArenaInteractive.Tests;
 
 using System;
@@ -20,20 +22,20 @@ internal class UnitTests
             MessagePartCount = 1,
             RecipientCount = 1,
             SendDateTimeEstimate = DateTime.UtcNow,
-            Warnings = [],
+            Warnings = Array.Empty<string>(),
         }));
 
         var input = new Input
         {
             Content = "Hello world",
             Recipients =
-            [
+            new Recipient[] {
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = [],
+                    Personalization = Array.Empty<Personalization>(),
                 },
-            ],
+            },
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
             CustomerId = Guid.NewGuid(),
@@ -58,13 +60,13 @@ internal class UnitTests
         {
             Content = "Hello world",
             Recipients =
-            [
+            new Recipient[] {
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = [],
+                    Personalization = Array.Empty<Personalization>(),
                 },
-            ],
+            },
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
             CustomerId = Guid.NewGuid(),
@@ -87,13 +89,14 @@ internal class UnitTests
         {
             Content = "Hello world",
             Recipients =
-            [
+            new Recipient[] 
+            {
                 new Recipient
                 {
                     Address = "358101001234",
-                    Personalization = [],
+                    Personalization = Array.Empty<Personalization>(),
                 },
-            ],
+            },
             Sender = "Tester",
             ServiceId = Guid.NewGuid(),
             CustomerId = Guid.NewGuid(),
