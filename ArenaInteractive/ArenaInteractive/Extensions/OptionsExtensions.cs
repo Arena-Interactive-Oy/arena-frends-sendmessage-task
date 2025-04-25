@@ -1,9 +1,8 @@
-﻿using System.Globalization;
-
-namespace ArenaInteractive.Extensions;
+﻿namespace ArenaInteractive.Extensions;
 
 using System;
 using Definitions;
+using System.Globalization;
 
 internal static class OptionsExtensions
 {
@@ -16,7 +15,7 @@ internal static class OptionsExtensions
 
         if (options.AllowedSendDays is { Length: 0 })
         {
-            return $"{nameof(Options.AllowedSendDays)} must have at least 1 element";
+            options.AllowedSendDays = Constants.AllDaysOfWeek;
         }
 
         if (TimeSpan.TryParse(options.AllowedSendTimeStart, CultureInfo.InvariantCulture, out var allowedTimeStart) &&

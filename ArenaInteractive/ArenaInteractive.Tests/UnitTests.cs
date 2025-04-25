@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ArenaInteractive.Tests;
 
 using System;
@@ -13,6 +11,32 @@ using NUnit.Framework;
 [TestFixture]
 internal class UnitTests
 {
+    private readonly Input _validInput;
+    private readonly Options _validOptions;
+
+    public UnitTests()
+    {
+        _validInput = new Input
+        {
+            Sender = "TestSender",
+            Content = "Hello world",
+            CustomerId = Guid.NewGuid(),
+            ServiceId = Guid.NewGuid(),
+            Recipients = new Recipient[]
+            {
+                new Recipient
+                {
+                    Address = "358101001234",
+                },
+            },
+        };
+
+        _validOptions = new Options
+        {
+            PersonalAccessToken = "Test1234",
+        };
+    }
+
     [Test]
     public async Task SendSmartMessage_ValidParameters_SuccessfulResponseReturned()
     {
@@ -25,25 +49,7 @@ internal class UnitTests
             Warnings = Array.Empty<string>(),
         }));
 
-        var input = new Input
-        {
-            Content = "Hello world",
-            Recipients =
-            new Recipient[] {
-                new Recipient
-                {
-                    Address = "358101001234",
-                    Personalization = Array.Empty<Personalization>(),
-                },
-            },
-            Sender = "Tester",
-            ServiceId = Guid.NewGuid(),
-            CustomerId = Guid.NewGuid(),
-        };
-
-        var options = new Options { PersonalAccessToken = "test1234" };
-
-        var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
         Assert.True(result.Success);
     }
 
@@ -56,25 +62,7 @@ internal class UnitTests
             ErrorMessage = "Something went wrong with validation",
         }));
 
-        var input = new Input
-        {
-            Content = "Hello world",
-            Recipients =
-            new Recipient[] {
-                new Recipient
-                {
-                    Address = "358101001234",
-                    Personalization = Array.Empty<Personalization>(),
-                },
-            },
-            Sender = "Tester",
-            ServiceId = Guid.NewGuid(),
-            CustomerId = Guid.NewGuid(),
-        };
-
-        var options = new Options { PersonalAccessToken = "test1234" };
-
-        var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
         Assert.False(result.Success);
         Assert.IsNotEmpty(result.ErrorMessage);
     }
@@ -85,27 +73,23 @@ internal class UnitTests
     {
         SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, null));
 
-        var input = new Input
-        {
-            Content = "Hello world",
-            Recipients =
-            new Recipient[] 
-            {
-                new Recipient
-                {
-                    Address = "358101001234",
-                    Personalization = Array.Empty<Personalization>(),
-                },
-            },
-            Sender = "Tester",
-            ServiceId = Guid.NewGuid(),
-            CustomerId = Guid.NewGuid(),
-        };
-
-        var options = new Options { PersonalAccessToken = "test1234" };
-
-        var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
         Assert.False(result.Success);
         Assert.IsNotEmpty(result.ErrorMessage);
+    }
+
+    [TestCaseSource(typeof(ValidationTestData), nameof(ValidationTestData.TestCases))]
+    public async Task<bool> SendSmartMessage_TaskParametersValidationFailed_FailedResultReturned(Input input, Options options)
+    {
+        var validSendResponse = new SendResponse
+        {
+            Id = Guid.NewGuid().ToString(), RecipientCount = 1, MessagePartCount = 1,
+            SendDateTimeEstimate = DateTime.UtcNow,
+            Warnings = Array.Empty<string>(),
+        };
+        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, validSendResponse));
+
+        var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
+        return result.Success;
     }
 }

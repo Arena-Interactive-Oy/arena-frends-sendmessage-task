@@ -47,7 +47,7 @@ public static class SmartDialog
         var smartSendMessage = new SmartSendMessage(
             input.Sender,
             input.Content,
-            input.Recipients.Select(r => new SmartSendMessageRecipient(r.Address, r.Personalization.ToDictionary(p => p.Name, p => p.Value))).ToArray(),
+            input.Recipients.Select(r => new SmartSendMessageRecipient(r.Address, r.Personalization?.ToDictionary(p => p.Name, p => p.Value))).ToArray(),
             options.DlrUrl,
             options.CustomerData,
             options.SendDateTime,

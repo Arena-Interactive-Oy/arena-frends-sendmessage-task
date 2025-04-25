@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 /// <summary>
 /// Options class usually contains parameters that are required.
 /// </summary>
-public class Options
+public record Options
 {
     /// <summary>
     /// PAT (Personal Access Token) for sending messages
