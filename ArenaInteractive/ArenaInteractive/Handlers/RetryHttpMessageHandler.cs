@@ -11,6 +11,11 @@ internal class RetryHttpMessageHandler : DelegatingHandler
 {
     private const int MaxRetries = 10;
 
+    public RetryHttpMessageHandler()
+        : base(new HttpClientHandler())
+    {
+    }
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var requestCount = 0;
