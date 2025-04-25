@@ -10,4 +10,6 @@ using System.Text.Json.Serialization;
 [JsonSerializable(typeof(SmartSendMessage))]
 [JsonSerializable(typeof(SmartSendMessageRecipient))]
 [JsonSerializable(typeof(SendResponse))]
-public partial class SmartDialogSourceGenerationContext : JsonSerializerContext;
+public partial class SmartDialogSourceGenerationContext : JsonSerializerContext
+{
+}
