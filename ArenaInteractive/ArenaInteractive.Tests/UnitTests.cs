@@ -19,7 +19,7 @@ internal class UnitTests
         _validInput = new Input
         {
             Sender = "TestSender",
-            Content = "Hello world",
+            Content = "Hello $(test)",
             CustomerId = Guid.NewGuid(),
             ServiceId = Guid.NewGuid(),
             Recipients = new Recipient[]
@@ -27,6 +27,10 @@ internal class UnitTests
                 new Recipient
                 {
                     Address = "358101001234",
+                    Personalization = new Personalization[]
+                    {
+                        new Personalization { Name = "test", Value = "world" },
+                    },
                 },
             },
         };
@@ -83,7 +87,9 @@ internal class UnitTests
     {
         var validSendResponse = new SendResponse
         {
-            Id = Guid.NewGuid().ToString(), RecipientCount = 1, MessagePartCount = 1,
+            Id = Guid.NewGuid().ToString(),
+            RecipientCount = 1,
+            MessagePartCount = 1,
             SendDateTimeEstimate = DateTime.UtcNow,
             Warnings = Array.Empty<string>(),
         };
