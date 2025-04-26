@@ -2,6 +2,7 @@
 
 using DTOs;
 using System.Text.Json.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Source generation context
@@ -10,6 +11,7 @@ using System.Text.Json.Serialization;
 [JsonSerializable(typeof(SmartSendMessage))]
 [JsonSerializable(typeof(SmartSendMessageRecipient))]
 [JsonSerializable(typeof(SendResponse))]
+[ExcludeFromCodeCoverage]
 public partial class SmartDialogSourceGenerationContext : JsonSerializerContext
 {
 }
