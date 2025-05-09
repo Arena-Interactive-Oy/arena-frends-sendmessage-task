@@ -74,7 +74,21 @@ public static class SmartDialog
         httpRequestMessage.Headers.TryAddWithoutValidation("Customer-Id", input.CustomerId.ToString());
         httpRequestMessage.Headers.TryAddWithoutValidation("Service-Id", input.ServiceId.ToString());
 
-        var response = await smartDialogHttpClient.SendAsync(httpRequestMessage, cancellationToken);
+        HttpResponseMessage response;
+        try
+        {
+            response = await smartDialogHttpClient.SendAsync(httpRequestMessage, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            if (options.ThrowErrorOnFailure)
+            {
+                throw new Exception(options.ErrorMessageOnFailure, e);
+            }
+
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, e.Message), null));
+        }
+
         if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
         {
             var responseBodyAsString = await response.Content.ReadAsStringAsync(cancellationToken);
