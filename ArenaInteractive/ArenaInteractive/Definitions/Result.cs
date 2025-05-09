@@ -7,34 +7,6 @@ using System;
 public class Result
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class.
-    /// </summary>
-    /// <param name="id">Smart send id</param>
-    /// <param name="recipientCount">Recipient count</param>
-    /// <param name="messagePartCount">Message part count</param>
-    /// <param name="sendDateTimeEstimate">Send date time estimate</param>
-    /// <param name="warnings">Warnings</param>
-    public Result(string id, int recipientCount, int messagePartCount, DateTime sendDateTimeEstimate, string[] warnings)
-    {
-        Id = id;
-        RecipientCount = recipientCount;
-        MessagePartCount = messagePartCount;
-        SendDateTimeEstimate = sendDateTimeEstimate;
-        Warnings = warnings;
-        Success = true;
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class.
-    /// </summary>
-    /// <param name="errorMessage">Error message from API</param>
-    public Result(string errorMessage)
-    {
-        ErrorMessage = errorMessage;
-        Success = false;
-    }
-
-    /// <summary>
     /// True if message was queued successfully
     /// </summary>
     public bool Success { get; private set; }
@@ -65,7 +37,89 @@ public class Result
     public string[] Warnings { get; private set; }
 
     /// <summary>
-    /// Error message, in case sending was unsuccessful.
+    /// Error, in case sending was unsuccessful.
     /// </summary>
-    public string ErrorMessage { get; private set; }
+    public Error Error { get; private set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Result"/> class.
+    /// </summary>
+    /// <param name="id">Smart send id</param>
+    /// <param name="recipientCount">Recipient count</param>
+    /// <param name="messagePartCount">Message part count</param>
+    /// <param name="sendDateTimeEstimate">Send date time estimate</param>
+    /// <param name="warnings">Warnings</param>
+    public Result(string id, int recipientCount, int messagePartCount, DateTime sendDateTimeEstimate, string[] warnings)
+    {
+        Id = id;
+        RecipientCount = recipientCount;
+        MessagePartCount = messagePartCount;
+        SendDateTimeEstimate = sendDateTimeEstimate;
+        Warnings = warnings;
+        Success = true;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Result"/> class.
+    /// </summary>
+    /// <param name="error">Error details</param>
+    public Result(Error error)
+    {
+        Error = error;
+        Success = false;
+    }
+}
+
+/// <summary>
+/// Class containing error details
+/// </summary>
+public class Error
+{
+    /// <summary>
+    /// Detailed error message
+    /// </summary>
+    public string Message { get; set; }
+
+    /// <summary>
+    /// Additional info
+    /// </summary>
+    public ErrorAdditionalInfo AdditionalInfo { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Error"/> class.
+    /// </summary>
+    /// <param name="message">Detailed error message</param>
+    /// <param name="additionalInfo">Additional information about the error</param>
+    public Error(string message, ErrorAdditionalInfo additionalInfo)
+    {
+        Message = message;
+        AdditionalInfo = additionalInfo;
+    }
+}
+
+/// <summary>
+/// Class containing additional information about an error
+/// </summary>
+public class ErrorAdditionalInfo
+{
+    /// <summary>
+    /// HTTP status code in the API response
+    /// </summary>
+    public int HttpStatusCode { get; set; }
+
+    /// <summary>
+    /// HTTP response body, if any, from the API response
+    /// </summary>
+    public string ResponseBody { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ErrorAdditionalInfo"/> class.
+    /// </summary>
+    /// <param name="httpStatusCode">HTTP status code from API</param>
+    /// <param name="responseBody">HTTP response body from API</param>
+    public ErrorAdditionalInfo(int httpStatusCode, string responseBody)
+    {
+        HttpStatusCode = httpStatusCode;
+        ResponseBody = responseBody;
+    }
 }

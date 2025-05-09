@@ -9,25 +9,25 @@ using DTOs;
 
 internal class FakeHttpMessageHandler : HttpMessageHandler
 {
-    private readonly HttpStatusCode _statusCodeToReturn;
-    private readonly SendResponse _sendResponseObjectToReturn;
+    private readonly HttpStatusCode statusCodeToReturn;
+    private readonly SendResponse sendResponseObjectToReturn;
 
     public FakeHttpMessageHandler(HttpStatusCode statusCodeToReturn, SendResponse sendResponseObjectToReturn)
     {
-        _statusCodeToReturn = statusCodeToReturn;
-        _sendResponseObjectToReturn = sendResponseObjectToReturn;
+        this.statusCodeToReturn = statusCodeToReturn;
+        this.sendResponseObjectToReturn = sendResponseObjectToReturn;
     }
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var responseObject = _sendResponseObjectToReturn != null
-            ? new HttpResponseMessage(_statusCodeToReturn)
+        var responseObject = sendResponseObjectToReturn != null
+            ? new HttpResponseMessage(statusCodeToReturn)
             {
                 Content = new StringContent(JsonSerializer.Serialize(
-                    _sendResponseObjectToReturn,
+                    sendResponseObjectToReturn,
                     SmartDialogSourceGenerationContext.Default.SendResponse)),
             }
-            : new HttpResponseMessage(_statusCodeToReturn);
+            : new HttpResponseMessage(statusCodeToReturn);
         return Task.FromResult(responseObject);
     }
 }

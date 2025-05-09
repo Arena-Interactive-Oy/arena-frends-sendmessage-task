@@ -33,7 +33,7 @@ public class SendResponse
     public string[] Warnings { get; set; }
 
     /// <summary>
-    /// Gets or sets ErrorMessage
+    /// Gets or sets Error
     /// </summary>
     public string ErrorMessage { get; set; }
 

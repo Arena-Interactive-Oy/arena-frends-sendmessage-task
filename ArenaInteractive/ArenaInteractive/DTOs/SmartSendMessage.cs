@@ -9,35 +9,6 @@ using System;
 public class SmartSendMessage
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SmartSendMessage"/> class.
-    /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="content">Message content</param>
-    /// <param name="recipients">Recipients array</param>
-    /// <param name="dlrUrl">DlrUrl, if any</param>
-    /// <param name="customerData">CustomerData, if any</param>
-    /// <param name="sendDateTime">SendDateTime, if any</param>
-    /// <param name="allowedSendTimeStart">Allowed send time range start, if any</param>
-    /// <param name="allowedSendTimeEnd">Allowed send time range end, if any</param>
-    /// <param name="allowedSendDays">Allowed send days, if restricted</param>
-    /// <param name="requestId">Unique request id</param>
-    /// <param name="unicodeCharacterHandlingPolicy">Unicode handling policy</param>
-    public SmartSendMessage(string sender, string content, SmartSendMessageRecipient[] recipients, string dlrUrl, string customerData, DateTime? sendDateTime, TimeSpan? allowedSendTimeStart, TimeSpan? allowedSendTimeEnd, DayOfWeek[] allowedSendDays, string requestId, UnicodeCharacterHandlingPolicy unicodeCharacterHandlingPolicy)
-    {
-        Sender = sender;
-        Content = content;
-        Recipients = recipients;
-        DlrUrl = dlrUrl;
-        CustomerData = customerData;
-        SendDateTime = sendDateTime;
-        AllowedSendTimeStart = allowedSendTimeStart;
-        AllowedSendTimeEnd = allowedSendTimeEnd;
-        AllowedSendDays = allowedSendDays;
-        RequestId = requestId;
-        UnicodeCharacterHandlingPolicy = unicodeCharacterHandlingPolicy;
-    }
-
-    /// <summary>
     /// Gets or sets Sender
     /// </summary>
     public string Sender { get; set; }
@@ -92,5 +63,32 @@ public class SmartSendMessage
     /// </summary>
     public UnicodeCharacterHandlingPolicy UnicodeCharacterHandlingPolicy { get; set; }
 
-    public bool AccurateEstimation => true;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SmartSendMessage"/> class.
+    /// </summary>
+    /// <param name="sender">Sender</param>
+    /// <param name="content">Message content</param>
+    /// <param name="recipients">Recipients array</param>
+    /// <param name="dlrUrl">DlrUrl, if any</param>
+    /// <param name="customerData">CustomerData, if any</param>
+    /// <param name="sendDateTime">SendDateTime, if any</param>
+    /// <param name="allowedSendTimeStart">Allowed send time range start, if any</param>
+    /// <param name="allowedSendTimeEnd">Allowed send time range end, if any</param>
+    /// <param name="allowedSendDays">Allowed send days, if restricted</param>
+    /// <param name="requestId">Unique request id</param>
+    /// <param name="unicodeCharacterHandlingPolicy">Unicode handling policy</param>
+    public SmartSendMessage(string sender, string content, SmartSendMessageRecipient[] recipients, string dlrUrl, string customerData, DateTime? sendDateTime, TimeSpan? allowedSendTimeStart, TimeSpan? allowedSendTimeEnd, DayOfWeek[] allowedSendDays, string requestId, UnicodeCharacterHandlingPolicy unicodeCharacterHandlingPolicy)
+    {
+        Sender = sender;
+        Content = content;
+        Recipients = recipients;
+        DlrUrl = dlrUrl;
+        CustomerData = customerData;
+        SendDateTime = sendDateTime;
+        AllowedSendTimeStart = allowedSendTimeStart;
+        AllowedSendTimeEnd = allowedSendTimeEnd;
+        AllowedSendDays = allowedSendDays;
+        RequestId = requestId;
+        UnicodeCharacterHandlingPolicy = unicodeCharacterHandlingPolicy;
+    }
 }

@@ -11,12 +11,12 @@ using NUnit.Framework;
 [TestFixture]
 internal class UnitTests
 {
-    private readonly Input _validInput;
-    private readonly Options _validOptions;
+    private readonly Input validInput;
+    private readonly Options validOptions;
 
     public UnitTests()
     {
-        _validInput = new Input
+        validInput = new Input
         {
             Sender = "TestSender",
             Content = "Hello $(test)",
@@ -35,16 +35,22 @@ internal class UnitTests
             },
         };
 
-        _validOptions = new Options
+        validOptions = new Options
         {
             PersonalAccessToken = "Test1234",
+            ThrowErrorOnFailure = false,
         };
+    }
+
+    public UnitTests(Input validInput)
+    {
+        this.validInput = validInput;
     }
 
     [Test]
     public async Task SendSmartMessage_ValidParameters_SuccessfulResponseReturned()
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, new SendResponse
+        SmartDialog.smartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, new SendResponse
         {
             Id = Guid.NewGuid().ToString(),
             MessagePartCount = 1,
@@ -53,7 +59,7 @@ internal class UnitTests
             Warnings = Array.Empty<string>(),
         }));
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.True(result.Success);
     }
 
@@ -61,25 +67,25 @@ internal class UnitTests
     [TestCase(HttpStatusCode.TooManyRequests)]
     public async Task SendSmartMessage_HandledErrorCases_BadRequestResponseReturned(HttpStatusCode statusCodeToReturn)
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, new SendResponse
+        SmartDialog.smartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, new SendResponse
         {
             ErrorMessage = "Something went wrong with validation",
         }));
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.False(result.Success);
-        Assert.IsNotEmpty(result.ErrorMessage);
+        Assert.IsNotEmpty(result.Error?.Message);
     }
 
     [TestCase(HttpStatusCode.InternalServerError)]
     [TestCase(HttpStatusCode.BadGateway)]
     public async Task SendSmartMessage_UnknownErrorCases_UnhandledStatusCodeReturned(HttpStatusCode statusCodeToReturn)
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, null));
+        SmartDialog.smartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, null));
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.False(result.Success);
-        Assert.IsNotEmpty(result.ErrorMessage);
+        Assert.IsNotEmpty(result.Error?.Message);
     }
 
     [TestCaseSource(typeof(ValidationTestData), nameof(ValidationTestData.TestCases))]
@@ -93,7 +99,7 @@ internal class UnitTests
             SendDateTimeEstimate = DateTime.UtcNow,
             Warnings = Array.Empty<string>(),
         };
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, validSendResponse));
+        SmartDialog.smartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, validSendResponse));
 
         var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
         return result.Success;
