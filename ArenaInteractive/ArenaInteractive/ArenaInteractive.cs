@@ -120,12 +120,9 @@ public static class SmartDialog
             : new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, responseObject.ErrorMessage ?? "Unknown error"), new ErrorAdditionalInfo((int)response.StatusCode, JsonSerializer.Serialize(responseObject))));
     }
 
-    internal static HttpClient CreateSmartDialogHttpClient(HttpMessageHandler primaryMessageHandler = null)
+    private static HttpClient CreateSmartDialogHttpClient()
     {
-        var httpClient = primaryMessageHandler != null
-            ? new HttpClient(primaryMessageHandler)
-            : new HttpClient(new RetryHttpMessageHandler());
-
+        var httpClient = new HttpClient(new RetryHttpMessageHandler(new HttpClientHandler()));
         httpClient.BaseAddress = new Uri("https://api.arena.fi/messaging-gateway/v1/", UriKind.Absolute);
 
         return httpClient;

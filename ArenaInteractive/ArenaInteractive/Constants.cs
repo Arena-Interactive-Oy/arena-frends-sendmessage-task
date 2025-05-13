@@ -8,6 +8,11 @@ using System.Net;
 public static class Constants
 {
     /// <summary>
+    /// Number of retries to attempt when response is not one of the handled status codes
+    /// </summary>
+    public const int MaxRetries = 10;
+
+    /// <summary>
     /// HTTP status codes that are expected and can be handled
     /// </summary>
     public static readonly HttpStatusCode[] HandledStatusCodes = new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.BadRequest, HttpStatusCode.TooManyRequests };
