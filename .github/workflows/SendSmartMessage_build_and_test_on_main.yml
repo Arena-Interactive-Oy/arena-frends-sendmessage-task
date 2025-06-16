@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-    uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_main.yml@main
+    uses: FrendsPlatform/FrendsTasks/.github/workflows/build_test_partner.yml@main
     with:
       workdir: ArenaInteractive
-    secrets:
-      badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
       
