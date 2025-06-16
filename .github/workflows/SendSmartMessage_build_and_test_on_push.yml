@@ -9,7 +9,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  linux_build:
+    name: build on Ubuntu
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_test_partner.yml@main
     with:
       workdir: ArenaInteractive
