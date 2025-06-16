@@ -2,17 +2,14 @@
 
 using System.Linq;
 using System.Net;
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 internal class RetryHttpMessageHandler : DelegatingHandler
 {
-    private const int MaxRetries = 10;
-
-    public RetryHttpMessageHandler()
-        : base(new HttpClientHandler())
+    public RetryHttpMessageHandler(HttpClientHandler innerHandler)
+        : base(innerHandler)
     {
     }
 
@@ -21,23 +18,15 @@ internal class RetryHttpMessageHandler : DelegatingHandler
         var requestCount = 0;
         do
         {
-            requestCount++;
-            try
+            var response = await base.SendAsync(request, cancellationToken);
+            if (response.IsSuccessStatusCode || Constants.HandledStatusCodes.Contains(response.StatusCode))
             {
-                var response = await base.SendAsync(request, cancellationToken);
-                if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode) && requestCount < MaxRetries)
-                {
-                    continue;
-                }
-
                 return response;
             }
-            catch (Exception)
-            {
-                // noop
-            }
+
+            requestCount++;
         }
-        while (requestCount < MaxRetries);
+        while (requestCount < Constants.MaxRetries);
 
         return new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
     }

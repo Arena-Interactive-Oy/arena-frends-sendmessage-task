@@ -68,6 +68,17 @@ public record Options
     /// </summary>
     [DefaultValue(UnicodeCharacterHandlingPolicy.None)]
     public UnicodeCharacterHandlingPolicy UnicodeCharacterHandlingPolicy { get; set; }
+
+    /// <summary>
+    /// Throw exception if return value of request is not successful.
+    /// </summary>
+    [DefaultValue("true")]
+    public bool ThrowErrorOnFailure { get; set; } = true;
+
+    /// <summary>
+    /// Error message in case of thrown exception or task failure
+    /// </summary>
+    public string ErrorMessageOnFailure { get; set; }
 }
 
 /// <summary>

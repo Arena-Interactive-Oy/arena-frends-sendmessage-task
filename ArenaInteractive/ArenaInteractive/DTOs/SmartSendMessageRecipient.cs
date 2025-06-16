@@ -8,6 +8,16 @@ using System.Collections.Generic;
 public class SmartSendMessageRecipient
 {
     /// <summary>
+    /// Gets or sets recipient address
+    /// </summary>
+    public string Address { get; set; }
+
+    /// <summary>
+    /// Gets or sets personalization
+    /// </summary>
+    public Dictionary<string, string> Personalization { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SmartSendMessageRecipient"/> class.
     /// </summary>
     /// <param name="address">Recipient address</param>
@@ -17,14 +27,4 @@ public class SmartSendMessageRecipient
         Address = address;
         Personalization = personalization;
     }
-
-    /// <summary>
-    /// Gets or sets recipient address
-    /// </summary>
-    public string Address { get; set; }
-
-    /// <summary>
-    /// Gets or sets personalization
-    /// </summary>
-    public Dictionary<string, string> Personalization { get; set; }
 }

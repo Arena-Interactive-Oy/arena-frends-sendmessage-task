@@ -1,5 +1,6 @@
 ﻿namespace ArenaInteractive;
 
+using System.Text.Json;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Globalization;
@@ -20,7 +21,7 @@ using Definitions;
 /// </summary>
 public static class SmartDialog
 {
-    internal static HttpClient SmartDialogHttpClient = CreateSmartDialogHttpClient();
+    internal static HttpClient smartDialogHttpClient = CreateSmartDialogHttpClient();
 
     /// <summary>
     /// Send message using Smart parameters
@@ -35,13 +36,23 @@ public static class SmartDialog
         var inputValidationMessage = input.Validate();
         if (inputValidationMessage != null)
         {
-            return new Result(inputValidationMessage);
+            if (options.ThrowErrorOnFailure)
+            {
+                throw new Exception(BuildErrorMessage(options.ErrorMessageOnFailure, inputValidationMessage));
+            }
+
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, inputValidationMessage), null));
         }
 
         var optionsValidationMessage = options.Validate();
         if (optionsValidationMessage != null)
         {
-            return new Result(optionsValidationMessage);
+            if (options.ThrowErrorOnFailure)
+            {
+                throw new Exception(BuildErrorMessage(options.ErrorMessageOnFailure, optionsValidationMessage));
+            }
+
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, optionsValidationMessage), null));
         }
 
         var smartSendMessage = new SmartSendMessage(
@@ -63,17 +74,40 @@ public static class SmartDialog
         httpRequestMessage.Headers.TryAddWithoutValidation("Customer-Id", input.CustomerId.ToString());
         httpRequestMessage.Headers.TryAddWithoutValidation("Service-Id", input.ServiceId.ToString());
 
-        var response = await SmartDialogHttpClient.SendAsync(httpRequestMessage, cancellationToken);
+        HttpResponseMessage response;
+        try
+        {
+            response = await smartDialogHttpClient.SendAsync(httpRequestMessage, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            if (options.ThrowErrorOnFailure)
+            {
+                throw new Exception(options.ErrorMessageOnFailure, e);
+            }
+
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, e.Message), null));
+        }
+
         if (!response.IsSuccessStatusCode && !Constants.HandledStatusCodes.Contains(response.StatusCode))
         {
             var responseBodyAsString = await response.Content.ReadAsStringAsync(cancellationToken);
-            return new Result($"Sending failed, unknown statusCode: {(int)response.StatusCode}, response body: {responseBodyAsString}");
+            var message = $"Sending failed, unknown statusCode: {(int)response.StatusCode}, response body: {responseBodyAsString}";
+            var errorMessage = BuildErrorMessage(options.ErrorMessageOnFailure, message);
+
+            if (options.ThrowErrorOnFailure)
+            {
+                throw new Exception(errorMessage);
+            }
+
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, errorMessage), new ErrorAdditionalInfo((int)response.StatusCode, responseBodyAsString)));
         }
 
         var responseObject = await response.Content.ReadFromJsonAsync(SmartDialogSourceGenerationContext.Default.SendResponse, cancellationToken);
         if (responseObject == null)
         {
-            return new Result("Sending failed, response body is empty");
+            var errorMessage = BuildErrorMessage(options.ErrorMessageOnFailure, "Sending failed, response body is empty");
+            return new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, errorMessage), new ErrorAdditionalInfo((int)response.StatusCode, null)));
         }
 
         return responseObject.Successful
@@ -83,17 +117,21 @@ public static class SmartDialog
                 responseObject.MessagePartCount!.Value,
                 responseObject.SendDateTimeEstimate!.Value,
                 responseObject.Warnings)
-            : new Result(responseObject.ErrorMessage ?? "Unknown error");
+            : new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, responseObject.ErrorMessage ?? "Unknown error"), new ErrorAdditionalInfo((int)response.StatusCode, JsonSerializer.Serialize(responseObject))));
     }
 
-    internal static HttpClient CreateSmartDialogHttpClient(HttpMessageHandler primaryMessageHandler = null)
+    private static HttpClient CreateSmartDialogHttpClient()
     {
-        var httpClient = primaryMessageHandler != null
-            ? new HttpClient(primaryMessageHandler)
-            : new HttpClient(new RetryHttpMessageHandler());
-
+        var httpClient = new HttpClient(new RetryHttpMessageHandler(new HttpClientHandler()));
         httpClient.BaseAddress = new Uri("https://api.arena.fi/messaging-gateway/v1/", UriKind.Absolute);
 
         return httpClient;
+    }
+
+    private static string BuildErrorMessage(string errorMessageOnFailure, string taskErrorMessage)
+    {
+        return !string.IsNullOrWhiteSpace(errorMessageOnFailure)
+            ? $"{errorMessageOnFailure}: {taskErrorMessage}"
+            : taskErrorMessage;
     }
 }

@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 using DTOs;
 using Definitions;
 using NUnit.Framework;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Moq;
 
 [TestFixture]
 internal class UnitTests
 {
-    private readonly Input _validInput;
-    private readonly Options _validOptions;
+    private readonly Input validInput;
+    private readonly Options validOptions;
+
+    private readonly Mock<HttpClient> mockhttpClient;
 
     public UnitTests()
     {
-        _validInput = new Input
+        validInput = new Input
         {
             Sender = "TestSender",
             Content = "Hello $(test)",
@@ -35,25 +40,38 @@ internal class UnitTests
             },
         };
 
-        _validOptions = new Options
+        validOptions = new Options
         {
             PersonalAccessToken = "Test1234",
+            ThrowErrorOnFailure = false,
         };
+
+        mockhttpClient = new Mock<HttpClient>(MockBehavior.Strict);
+        SmartDialog.smartDialogHttpClient = mockhttpClient.Object;
+    }
+
+    public UnitTests(Input validInput)
+    {
+        this.validInput = validInput;
     }
 
     [Test]
     public async Task SendSmartMessage_ValidParameters_SuccessfulResponseReturned()
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, new SendResponse
+        var responseObject = new SendResponse
         {
             Id = Guid.NewGuid().ToString(),
             MessagePartCount = 1,
             RecipientCount = 1,
             SendDateTimeEstimate = DateTime.UtcNow,
             Warnings = Array.Empty<string>(),
-        }));
+        };
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        mockhttpClient
+            .Setup(client => client.SendAsync(It.Is<HttpRequestMessage>(m => m.Method == HttpMethod.Put), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = JsonContent.Create(responseObject) });
+
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.True(result.Success);
     }
 
@@ -61,25 +79,31 @@ internal class UnitTests
     [TestCase(HttpStatusCode.TooManyRequests)]
     public async Task SendSmartMessage_HandledErrorCases_BadRequestResponseReturned(HttpStatusCode statusCodeToReturn)
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, new SendResponse
+        var responseObject = new SendResponse
         {
             ErrorMessage = "Something went wrong with validation",
-        }));
+        };
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        mockhttpClient
+            .Setup(client => client.SendAsync(It.Is<HttpRequestMessage>(m => m.Method == HttpMethod.Put), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(statusCodeToReturn) { Content = JsonContent.Create(responseObject) });
+
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.False(result.Success);
-        Assert.IsNotEmpty(result.ErrorMessage);
+        Assert.IsNotEmpty(result.Error?.Message);
     }
 
     [TestCase(HttpStatusCode.InternalServerError)]
     [TestCase(HttpStatusCode.BadGateway)]
     public async Task SendSmartMessage_UnknownErrorCases_UnhandledStatusCodeReturned(HttpStatusCode statusCodeToReturn)
     {
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(statusCodeToReturn, null));
+        mockhttpClient
+            .Setup(client => client.SendAsync(It.Is<HttpRequestMessage>(m => m.Method == HttpMethod.Put), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(statusCodeToReturn));
 
-        var result = await SmartDialog.SendSmartMessage(_validInput, _validOptions, CancellationToken.None);
+        var result = await SmartDialog.SendSmartMessage(validInput, validOptions, CancellationToken.None);
         Assert.False(result.Success);
-        Assert.IsNotEmpty(result.ErrorMessage);
+        Assert.IsNotEmpty(result.Error?.Message);
     }
 
     [TestCaseSource(typeof(ValidationTestData), nameof(ValidationTestData.TestCases))]
@@ -93,7 +117,10 @@ internal class UnitTests
             SendDateTimeEstimate = DateTime.UtcNow,
             Warnings = Array.Empty<string>(),
         };
-        SmartDialog.SmartDialogHttpClient = SmartDialog.CreateSmartDialogHttpClient(new FakeHttpMessageHandler(HttpStatusCode.OK, validSendResponse));
+
+        mockhttpClient
+            .Setup(client => client.SendAsync(It.Is<HttpRequestMessage>(m => m.Method == HttpMethod.Put), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = JsonContent.Create(validSendResponse) });
 
         var result = await SmartDialog.SendSmartMessage(input, options, CancellationToken.None);
         return result.Success;
