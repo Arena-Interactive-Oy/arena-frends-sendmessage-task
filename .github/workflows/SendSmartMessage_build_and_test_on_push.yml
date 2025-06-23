@@ -1,0 +1,18 @@
+name: SendSmartMessage_build_test
+
+on:
+  push:
+    branches-ignore:    
+      - main
+    paths:
+      - 'ArenaInteractive/**'
+  workflow_dispatch:
+
+jobs:
+  linux_build:
+    name: build on Ubuntu
+    uses: FrendsPlatform/FrendsTasks/.github/workflows/partners_build_test.yml@main
+    with:
+      workdir: ArenaInteractive
+
+
