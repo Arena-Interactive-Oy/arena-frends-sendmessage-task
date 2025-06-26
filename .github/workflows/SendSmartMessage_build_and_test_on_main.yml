@@ -12,7 +12,7 @@ jobs:
   linux_build:
     name: build on Ubuntu
     permissions:
-      contents: read/write
+      contents: write
     uses: FrendsPlatform/FrendsTasks/.github/workflows/partners_build_main.yml@main
     with:
       workdir: ArenaInteractive
