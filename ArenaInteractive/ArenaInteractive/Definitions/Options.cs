@@ -1,8 +1,8 @@
-﻿using System;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
+
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
-namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
 /// <summary>
 /// Options class usually contains parameters that are required.

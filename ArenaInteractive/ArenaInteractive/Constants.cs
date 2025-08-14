@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage;
 
-namespace ArenaInteractive.SmartDialog.SendSmartMessage;
+using System;
+using System.Net;
 
 /// <summary>
 /// Contains common constants

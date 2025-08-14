@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage;
+
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -9,12 +11,10 @@ using System.Net.Mime;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
-using ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
-using ArenaInteractive.SmartDialog.SendSmartMessage.Extensions;
-using ArenaInteractive.SmartDialog.SendSmartMessage.Handlers;
-
-namespace ArenaInteractive.SmartDialog.SendSmartMessage;
+using Definitions;
+using DTOs;
+using Extensions;
+using Handlers;
 
 /// <summary>
 /// Main class of the Task.

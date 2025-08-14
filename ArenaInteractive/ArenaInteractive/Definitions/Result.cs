@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
-namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
+using System;
 
 /// <summary>
 /// Result class usually contains properties of the return object.

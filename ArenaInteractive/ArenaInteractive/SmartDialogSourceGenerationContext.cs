@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
-using ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage;
 
-namespace ArenaInteractive.SmartDialog.SendSmartMessage;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using DTOs;
 
 /// <summary>
 /// Source generation context

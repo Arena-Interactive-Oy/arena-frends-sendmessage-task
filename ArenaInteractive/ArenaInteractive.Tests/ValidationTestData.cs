@@ -1,10 +1,10 @@
-﻿using System;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests;
+
+using System;
 using System.Collections;
 using System.Linq;
-using ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
+using Definitions;
 using NUnit.Framework;
-
-namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests;
 
 internal static class ValidationTestData
 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests.Handlers;
+
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -7,8 +9,6 @@ using ArenaInteractive.SmartDialog.SendSmartMessage.Handlers;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-
-namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests.Handlers;
 
 internal class RetryHttpMessageHandlerTests
 {
