@@ -1,7 +1,7 @@
-﻿namespace ArenaInteractive.Definitions;
-
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
 /// <summary>
 /// Input class usually contains parameters that are required.

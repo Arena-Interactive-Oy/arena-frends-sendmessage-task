@@ -1,20 +1,20 @@
-﻿namespace ArenaInteractive;
-
-using System.Text.Json;
-using System.Net.Http.Headers;
-using System.Net.Mime;
+﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using DTOs;
-using Extensions;
-using System;
 using System.Net.Http;
-using Handlers;
-using System.ComponentModel;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Net.Mime;
+using System.Text.Json;
 using System.Threading;
-using Definitions;
+using System.Threading.Tasks;
+using ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
+using ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
+using ArenaInteractive.SmartDialog.SendSmartMessage.Extensions;
+using ArenaInteractive.SmartDialog.SendSmartMessage.Handlers;
+
+namespace ArenaInteractive.SmartDialog.SendSmartMessage;
 
 /// <summary>
 /// Main class of the Task.
@@ -117,7 +117,7 @@ public static class SmartDialog
                 responseObject.MessagePartCount!.Value,
                 responseObject.SendDateTimeEstimate!.Value,
                 responseObject.Warnings)
-            : new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, responseObject.ErrorMessage ?? "Unknown error"), new ErrorAdditionalInfo((int)response.StatusCode, JsonSerializer.Serialize(responseObject))));
+            : new Result(new Error(BuildErrorMessage(options.ErrorMessageOnFailure, responseObject.ErrorMessage ?? "Unknown error"), new ErrorAdditionalInfo((int)response.StatusCode, JsonSerializer.Serialize<SendResponse>(responseObject))));
     }
 
     private static HttpClient CreateSmartDialogHttpClient()

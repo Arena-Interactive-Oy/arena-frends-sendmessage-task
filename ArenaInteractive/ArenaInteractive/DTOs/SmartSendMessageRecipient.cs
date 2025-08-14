@@ -1,6 +1,6 @@
-﻿namespace ArenaInteractive.DTOs;
+﻿using System.Collections.Generic;
 
-using System.Collections.Generic;
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
 
 /// <summary>
 /// Part of the request object type for Smart Send Messages API

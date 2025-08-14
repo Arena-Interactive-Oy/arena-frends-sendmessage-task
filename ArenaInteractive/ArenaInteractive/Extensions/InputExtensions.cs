@@ -1,7 +1,7 @@
-﻿namespace ArenaInteractive.Extensions;
+﻿using System;
+using ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
-using System;
-using Definitions;
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.Extensions;
 
 internal static class InputExtensions
 {

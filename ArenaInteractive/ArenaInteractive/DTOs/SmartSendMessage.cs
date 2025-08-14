@@ -1,7 +1,7 @@
-﻿namespace ArenaInteractive.DTOs;
+﻿using System;
+using ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
-using Definitions;
-using System;
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
 
 /// <summary>
 /// Request object type for Smart Send Messages API

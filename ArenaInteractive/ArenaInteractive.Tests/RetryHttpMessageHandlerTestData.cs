@@ -1,10 +1,10 @@
-﻿namespace ArenaInteractive.Tests;
-
-using System.Net;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Net;
+using NUnit.Framework;
+
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests;
 
 internal static class RetryHttpMessageHandlerTestData
 {

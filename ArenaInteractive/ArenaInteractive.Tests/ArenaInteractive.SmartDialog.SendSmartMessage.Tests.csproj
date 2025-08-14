@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArenaInteractive\ArenaInteractive.csproj" />
+    <ProjectReference Include="..\ArenaInteractive\ArenaInteractive.SmartDialog.SendSmartMessage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

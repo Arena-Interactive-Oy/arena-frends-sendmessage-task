@@ -1,4 +1,4 @@
-﻿namespace ArenaInteractive.Definitions;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
 /// <summary>
 /// Class containing additional information about an error
