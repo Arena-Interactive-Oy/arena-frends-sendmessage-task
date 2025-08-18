@@ -1,15 +1,15 @@
-namespace ArenaInteractive.Tests;
+namespace ArenaInteractive.SmartDialog.SendSmartMessage.Tests;
 
 using System;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using DTOs;
-using Definitions;
-using NUnit.Framework;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using Definitions;
+using DTOs;
 using Moq;
+using NUnit.Framework;
 
 [TestFixture]
 internal class UnitTests

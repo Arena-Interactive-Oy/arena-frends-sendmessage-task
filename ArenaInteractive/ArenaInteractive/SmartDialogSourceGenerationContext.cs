@@ -1,8 +1,8 @@
-﻿namespace ArenaInteractive;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage;
 
-using DTOs;
-using System.Text.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using DTOs;
 
 /// <summary>
 /// Source generation context

@@ -1,7 +1,7 @@
-﻿namespace ArenaInteractive.Definitions;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Definitions;
 
-using System.ComponentModel;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 /// <summary>

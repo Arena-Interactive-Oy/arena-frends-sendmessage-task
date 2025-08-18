@@ -1,8 +1,8 @@
-﻿namespace ArenaInteractive.Extensions;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Extensions;
 
 using System;
-using Definitions;
 using System.Globalization;
+using Definitions;
 
 internal static class OptionsExtensions
 {

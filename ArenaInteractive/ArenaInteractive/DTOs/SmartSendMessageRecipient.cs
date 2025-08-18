@@ -1,4 +1,4 @@
-﻿namespace ArenaInteractive.DTOs;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.DTOs;
 
 using System.Collections.Generic;
 

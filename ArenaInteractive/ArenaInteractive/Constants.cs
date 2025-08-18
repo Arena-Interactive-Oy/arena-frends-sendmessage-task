@@ -1,4 +1,5 @@
-﻿namespace ArenaInteractive;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage;
+
 using System;
 using System.Net;
 

@@ -1,4 +1,4 @@
-﻿namespace ArenaInteractive.Handlers;
+﻿namespace ArenaInteractive.SmartDialog.SendSmartMessage.Handlers;
 
 using System.Linq;
 using System.Net;
