@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 /// <summary>
 /// Input class usually contains parameters that are required.
 /// </summary>
-public record Input
+public class Input
 {
     /// <summary>
     /// Your CustomerId
