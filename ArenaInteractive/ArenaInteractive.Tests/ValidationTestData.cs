@@ -31,7 +31,7 @@ internal static class ValidationTestData
             yield return new TestCaseData(CreateInput(), CreateOptions(customerData: string.Join(string.Empty, Enumerable.Range(0, 256).Select(_ => "A")))).Returns(false).SetName($"{nameof(ValidationTestData)}_{i++}");
             yield return new TestCaseData(CreateInput(), CreateOptions(dlrUrl: "not-a-valid-uri")).Returns(false).SetName($"{nameof(ValidationTestData)}_{i++}");
             yield return new TestCaseData(CreateInput(), CreateOptions(requestId: string.Join(string.Empty, Enumerable.Range(0, 1001).Select(_ => "A")))).Returns(false).SetName($"{nameof(ValidationTestData)}_{i++}");
-            yield return new TestCaseData(CreateInput(), CreateOptions(sendDateTime: DateTime.UtcNow.AddMinutes(1)) ).Returns(false).SetName($"{nameof(ValidationTestData)}_{i}");
+            yield return new TestCaseData(CreateInput(), CreateOptions(sendDateTime: DateTime.UtcNow.AddMinutes(1))).Returns(false).SetName($"{nameof(ValidationTestData)}_{i}");
         }
     }
 
